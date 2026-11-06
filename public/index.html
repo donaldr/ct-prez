@@ -920,7 +920,7 @@ These are expectations, not results. The pilot measures each one against todayâ€
   <button class="btn" id="next" aria-label="Next slide">&darr;</button>
   <a class="btn" id="notesBtn" href="#notes" target="_blank" rel="opener">Notes <kbd class="hide-sm">N</kbd></a>
   <button class="btn hide-sm" id="fsBtn">Full screen <kbd>F</kbd></button>
-  <button class="btn hide-sm" id="pdfBtn" title="Save every slide as a PDF">PDF</button>
+  <a class="btn hide-sm" id="pdfBtn" href="/deck.pdf" download="Donald Richardson - Code and Theory.pdf" title="Download the deck as a PDF">PDF</a>
   <span class="sync" id="sync" hidden>
     <span class="sync-status" id="syncStatus"></span>
     <button class="btn" id="takeBtn">Take control</button>
@@ -1137,10 +1137,9 @@ These are expectations, not results. The pilot measures each one against todayâ€
     });
   };
   document.getElementById('fsBtn').onclick = toggleFs;
-  // Save as PDF: the browser's print dialog, with print CSS laying out one slide per page.
+  // PDF: downloads public/deck.pdf, built by `npm run pdf`. Printing (Ctrl+P) still works through the print CSS.
   var pdfBtn = document.getElementById('pdfBtn');
   if (window.top !== window) pdfBtn.hidden = true; // printing is blocked inside the claude.ai preview
-  pdfBtn.onclick = function () { window.print(); };
   window.addEventListener('beforeprint', function () {
     document.querySelectorAll('[data-count]').forEach(function (el) { el._run = false; el.textContent = (el.dataset.prefix || '') + (+el.dataset.count).toLocaleString('en-US') + (el.dataset.suffix || ''); });
   });

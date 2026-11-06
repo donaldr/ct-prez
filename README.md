@@ -23,3 +23,15 @@ This prints your URL, like https://ct-deck.<your-subdomain>.workers.dev. Share h
 - Followers apply state (slide, slideshow photos, About me hover); they don't replay raw input. Late joiners get the current state on connect.
 - Timers are stored as timestamps on the server; each browser computes the countdown itself.
 - The notes window (press N) follows the deck in the same browser and shows the shared timer.
+
+## PDF
+
+The PDF button downloads `public/deck.pdf`. Rebuild it after changing the deck:
+
+```
+npm install
+npx playwright install chromium   # once, if Playwright isn't installed
+npm run pdf
+```
+
+It renders every slide on a 16:9 landscape page with the deck's fonts embedded.
