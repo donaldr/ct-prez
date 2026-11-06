@@ -146,7 +146,9 @@ export default {
     const url = new URL(request.url);
     if (url.pathname.startsWith("/ws/")) {
       if (request.headers.get("Upgrade") !== "websocket") return new Response("Expected a WebSocket", { status: 426 });
-      const name = decodeURIComponent(url.pathname.slice(4)).slice(0, 200) || "_root";
+      const name = decodeURIComponent(url.pathname.slice(4)).slice(0, 200);
+      // The base URL has no room, so nobody can take control of it.
+      if (!name) return new Response("No room at the base URL", { status: 404 });
       return env.ROOM.get(env.ROOM.idFromName(name)).fetch(request);
     }
     return env.ASSETS.fetch(request);
