@@ -808,7 +808,7 @@ Guardrails: legal approves every generated image, only indemnified models, and t
 <!-- 8b architecture -->
 <section class="stop" data-title="How it runs" data-notes="This is how the future state runs on AWS. It’s the same design whether we run it as a managed service or it moves into Aurora’s own account, because it’s all infrastructure as code.
 
-Left, Aurora’s systems feed in: a Workfront request, product data from the PIM, and product engineering’s CAD files. The 3D master is made from that CAD inside the pipeline, stored with its files, and reused for every later launch of the product.
+Left, what comes in from Aurora: a Workfront request, product data from the PIM, and product engineering’s CAD files. The 3D master is made from that CAD inside the pipeline, stored with its files, and reused for every later launch of the product.
 
 In the middle, EventBridge receives the request and starts a Step Functions workflow. Step Functions is the conductor: it fans out one job per image, 90 for the pilot, sends each through the steps, retries failures, and pauses for review using task tokens, so a job can wait days for legal without anything running.
 
@@ -823,7 +823,7 @@ Right, results go back to Aurora: images into AEM Assets with tags and Content C
 Cost at this volume: no always-on GPU fleet is needed, because GPU workers scale to zero between jobs.">
 <div class="frame"><div class="slide" style="gap:28px">
   <h2 class="a">How it runs</h2>
-  <div class="ar"><div class="ar-side a" style="--d:2"><p class="ar-lbl">Aurora’s systems</p>
+  <div class="ar"><div class="ar-side a" style="--d:2"><p class="ar-lbl">From Aurora</p>
       <div class="ar-sys"><b>Workfront</b><span>Request and brief</span></div>
       <div class="ar-sys"><b>PIM</b><span>Colorways, markets, copy, prices</span></div>
       <div class="ar-sys"><b>Product CAD</b><span>Engineering’s design files</span></div></div>
