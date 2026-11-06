@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Code and Theory Deck</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +29,8 @@
   color-scheme: dark;
 }
 html, body { height: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
 [hidden] { display: none !important; }
 body { background: var(--surround); color: var(--paper); font-family: var(--text); overflow: hidden; }
 
@@ -1006,6 +1012,10 @@ I taught our team of freelancers which AI tools they could use and how: AI assis
 
     takeBtn.addEventListener('click', function () { msg({ t: controller === me ? 'release' : 'take' }); });
     timerBtn.addEventListener('click', function () { tpanel.hidden = !tpanel.hidden; });
+    document.addEventListener('pointerdown', function (e) {
+      if (!tpanel.hidden && !tpanel.contains(e.target) && e.target !== timerBtn) tpanel.hidden = true;
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') tpanel.hidden = true; });
     document.getElementById('tSet').addEventListener('click', function () {
       var mins = +document.getElementById('tMinutes').value;
       if (mins > 0) msg({ t: 'timer', action: 'config', total: Math.round(mins * 60000), slides: N });

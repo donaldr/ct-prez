@@ -91,8 +91,11 @@ export class Room extends DurableObject {
       this.data.state = m.state;
       const t = this.data.timer;
       if (t && typeof m.state.slide === "number" && m.state.slide !== t.slideIdx) {
+        // bank time on the slide being left, and pick up where the new slide left off
+        t.spent = t.spent || {};
+        t.spent[t.slideIdx] = t.slideElapsed + (t.running ? now - t.slideSince : 0);
         t.slideIdx = m.state.slide;
-        t.slideElapsed = 0;
+        t.slideElapsed = t.spent[t.slideIdx] || 0;
         t.slideSince = t.running ? now : null;
         this.broadcast({ t: "timer", timer: t, now });
       }
@@ -109,7 +112,7 @@ export class Room extends DurableObject {
         t = {
           total, slides: Math.max(1, Math.min(200, Math.round(+m.slides || 1))),
           running: false, elapsed: 0, since: null,
-          slideIdx: (this.data.state && this.data.state.slide) || 0, slideElapsed: 0, slideSince: null,
+          slideIdx: (this.data.state && this.data.state.slide) || 0, slideElapsed: 0, slideSince: null, spent: {},
         };
       } else if (!t) {
         return;
@@ -119,7 +122,7 @@ export class Room extends DurableObject {
         t.elapsed += now - t.since; t.slideElapsed += now - t.slideSince;
         t.running = false; t.since = null; t.slideSince = null;
       } else if (m.action === "reset") {
-        t.running = false; t.elapsed = 0; t.since = null; t.slideElapsed = 0; t.slideSince = null;
+        t.running = false; t.elapsed = 0; t.since = null; t.slideElapsed = 0; t.slideSince = null; t.spent = {};
       } else if (m.action === "clear") {
         t = null;
       }
